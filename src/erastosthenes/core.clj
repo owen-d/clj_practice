@@ -1,14 +1,34 @@
 (ns erastosthenes.core)
 
-(defn buildLimiter
-	"Builds a fn which limits modulo=0s through"
+(defn modulimit
+	"Builds a gating modulo fn"
 	[x]
 	#(mod % x))
 
-(defn hof
-	"testing a high order fn"
-	[a]
-	#(str a %))
+; (defn doEet
+; 	[arr reducer]
+; 	(doseq arr reducer))
+
+(defn gauntlet
+	[accum, gate]
+	(if accum (gate accum) accum))
+
+
+(defn idkyet
+	"still figuring this shit out"
+	[x]
+	(let [inputs (range 2 (+ x 1))
+		gates []
+		res []]
+		(doseq [value inputs]
+			(if 
+				(reduce 
+					gauntlet
+					value
+					gates)
+				(do (conj gates (modulimit value))
+					(conj res value)
+					(println (str "hit" value gates)))))))
 ; 
 ; 
 ; 
@@ -33,8 +53,7 @@
 (defn -main
   "I don't do a whole lot."
   []
-  (let [a (buildLimiter 2)] 
-  	(println (str (a 5)))))
+  (idkyet 5))
 
 ; (defn hof [a] (fn [b] (= a b)))
 ; (defn hof [a] #(= a %1))

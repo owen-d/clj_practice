@@ -7,7 +7,7 @@
 		([a] (if (or (= a nil) (= (mod a x) 0))
 			; is a multiple or was a multiple of a previous gate, disregard.
 			nil
-			;
+			; is not a multiple. Pass on to next in the list
 			a
 			))
 		; if passed no argument, we're on the final step. Return the original val this gate was made from,
@@ -27,4 +27,4 @@
   "I don't do a whole lot."
   []
   (let [gate (moduLimit 2)]
-  	(println (reduce #(str %1 ", " %2) (recursivePrimes 500 [] 2)))))
+  	(println (reduce #(str %1 ", " %2) (recursivePrimes 3000 [] 2)))))

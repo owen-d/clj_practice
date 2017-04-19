@@ -11,17 +11,6 @@
   [x]
   ())
 
-(defn tbd
-  ""
-  [preparsed cur_expr] (tbd preparsed [])
-  (case (count preparsed)
-    ; empty str
-    0 cur_expr
-    ; parse!
-    1 (conj cur_expr preparsed)
-    ; multiples: shell out
-    ))
-
 (defn clean_input
   [input]
   (into []
@@ -29,29 +18,21 @@
 
 (defn next_expr
   "fetch next list, returning [next-expr rest-of-unparsed-string]"
-  ([preparsed] (next_expr [] preparsed [\( \)]))
-  ;; ([preparsed [start_symbol end_symbol]]
-  ;;  (let [next_symb (first preparsed)
-  ;;        rest (drop 1 preparsed)]
-  ;;    (if (= next_symb start_symbol)
-  ;;      ;; we have a new list
-  ;;      (next_expr rest [] [start_symbol end_symbol])
-  ;;      ;; next expr isnt a new list
-  ;;      [next_symb rest]
-  ;;      )))
+  ([preparsed] (next_expr preparsed [] ["(" ")"]))
   ([preparsed cur_col [start_symbol end_symbol]]
-   (let [next_symb (first preparsed)
+   (let [next_symbol (str (first preparsed))
          rest (drop 1 preparsed)]
-     (if (= next_symb end_symbol)
-       ;end of the list has been reached!
-       [cur_col rest]
-       ;([(conj cur_col next_symb) rest])
-       (next_expr rest (conj cur_col next_symb) [start_symbol end_symbol])))))
-
-;; (defn des_tst
-;;   [x [b c]]
-;;   [x b c])
-
-;; (des_tst "a" ["b" "c"])
+     (cond
+       ;; we have a new list
+           (= next_symbol start_symbol) (next_expr rest cur_col [start_symbol end_symbol])
+                                        ;end of the list has been reached!
+           (= next_symbol end_symbol) [cur_col rest]
+                                        ;we're in the middle of a list
+       :else (next_expr rest (conj cur_col next_symbol) [start_symbol end_symbol])))))
 
 (first (next_expr (clean_input "(* (+ 1 2) 3)")))
+
+
+;; (clean_input "(* (+ 1 2) 3)")
+
+

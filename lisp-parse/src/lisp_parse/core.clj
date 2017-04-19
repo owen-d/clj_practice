@@ -12,10 +12,14 @@
   (first (next_expr
           (clean_input x))))
 
+(defn space_evenly
+  [s]
+  (str/replace s #"\s*[\(\)]\s*" #(str " " %1 " ")))
+
 (defn clean_input
-  [input]
-  (into []
-        (str/replace input #"\s" "")))
+  [s]
+  (filter #(not (empty? %1))
+          (str/split (space_evenly s) #"\s+")))
 
 (defn next_expr
   "fetch next list, returning [next-expr rest-of-unparsed-string]"
@@ -40,5 +44,6 @@
 
 ;; (first (next_expr (clean_input "(* (+ 1 2) 3)")))
 
-(parse "(* 2 (+ 1 2))")
+;; (parse "(* 2 (+ 1 2 10))")
 
+;; (str/replace "(* 2 (+ 1 2))" #"\s*[\(\)]\s*" #(str " " %1 " "))

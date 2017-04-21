@@ -6,12 +6,6 @@
   [x]
   (println x "Hello, World!"))
 
-(defn parse
-  "parses list strings"
-  [x]
-  (first (next_expr
-          (clean_input x))))
-
 (defn space_evenly
   [s]
   (str/replace s #"\s*[\(\)]\s*" #(str " " %1 " ")))
@@ -42,8 +36,11 @@
        ;we're in the middle of a list
        :else (next_expr rest (conj cur_col next_symbol) [start_symbol end_symbol])))))
 
-;; (first (next_expr (clean_input "(* (+ 1 2) 3)")))
+(defn parse
+  "parses list strings"
+  [x]
+  (first (next_expr
+          (clean_input x))))
 
-;; (parse "(* 2 (+ 1 2 10))")
+(parse "(* 2 (+ 1 2 10))")
 
-;; (str/replace "(* 2 (+ 1 2))" #"\s*[\(\)]\s*" #(str " " %1 " "))
